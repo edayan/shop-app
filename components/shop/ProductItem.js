@@ -1,24 +1,36 @@
 import React from 'react';
-import { Button, Image, StyleSheet, Text, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, View, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
 import Colors from '../../constants/Colors'
 import { hidden } from 'ansi-colors';
 const ProductItem = (props) => {
+
+    let TouchableComponenet = (Platform.OS === 'android' && Platform.Version >= 21) ? TouchableNativeFeedback : TouchableOpacity;
     return (
         <View style={styles.product}>
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{ uri: props.image }} />
+            <View style={styles.touchable}>
+                <TouchableComponenet onPress={props.onViewDetail}
+                    useForeground //for ripple effect to put over all including image
+                >
+                    <View>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={{ uri: props.image }} />
+                        </View>
+
+                        <View style={styles.details}>
+                            <Text style={styles.title}>{props.title}</Text>
+                            <Text style={styles.price}>$: {props.price.toFixed(2)}</Text>
+
+                        </View>
+                        <View style={styles.actions}>
+                            <Button color={Colors.primary} title="View details" onPress={props.onViewDetail} />
+                            <Button color={Colors.primary} title="Add to cart" onPress={props.onAddToCart} />
+                        </View>
+                    </View>
+
+
+                </TouchableComponenet>
             </View>
 
-            <View style={styles.details}>
-                <Text style={styles.title}>{props.title}</Text>
-                <Text style={styles.price}>$: {props.price.toFixed(2)}</Text>
-
-            </View>
-            <View style={styles.actions}>
-                <Button color={Colors.primary} title="View details" onPress={props.onViewDetail} />
-                <Button color={Colors.primary} title="Add to cart" onPress={props.onAddToCart} />
-            </View>
-            <Text></Text>
         </View>
     )
 }
@@ -35,7 +47,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: 'white',
         height: 300,
-        margin: 20
+        margin: 20,
+
+    },
+    touchable: {
+        borderRadius: 10,
+        overflow: 'hidden'
     },
     imageContainer: {
         width: '100%',
