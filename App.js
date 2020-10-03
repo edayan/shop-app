@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import ShopNavigator from './navigation/ShopNavigator';
 import cartReducer from './store/reducers/cart';
 import productReducer from './store/reducers/products';
@@ -14,7 +13,7 @@ const rootReduer = combineReducers({
   cart: cartReducer
 });
 
-const store = createStore(rootReduer, composeWithDevTools());
+const store = createStore(rootReduer,);
 
 const fetchFonts = () => {
   return Font.loadAsync({
