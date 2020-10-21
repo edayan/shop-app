@@ -1,30 +1,57 @@
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { Platform } from 'react-native';
 import { createAppContainer } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
-import { Platform } from 'react-native'
-
+import COLORS from '../constants/Colors';
+import CartScreen from '../screens/shop/CartScreen';
+import OrdersScreen from '../screens/shop/OrdersScreen';
+import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import ProductOverviewScreen from '../screens/shop/ProductOverviewScreen';
-import ProductDetailScreen from '../screens/shop/ProductDetailScreen'
-import CartScreen from '../screens/shop/CartScreen'
 
-import COLORS from '../constants/Colors'
 
+const defaultNavOptions = {
+    headerStyle: {
+        backgroundColor: Platform.OS === 'android' ? COLORS.primary : 'white'
+    },
+    headerTitleStyle: {
+        fontFamily: 'open-sans-bold'
+    },
+    headerBackTitleStyle: {
+        fontFamily: 'open-sans'
+    },
+    headerTintColor: Platform.OS === 'android' ? 'white' : COLORS.primary
+}
 const ProductsNavigator = createStackNavigator({
     ProductOverview: ProductOverviewScreen,
     ProductDetail: ProductDetailScreen,
     Cart: CartScreen
 }, {
-    defaultNavigationOptions: {
-        headerStyle: {
-            backgroundColor: Platform.OS === 'android' ? COLORS.primary : 'white'
-        },
-        headerTitleStyle: {
-            fontFamily: 'open-sans-bold'
-        },
-        headerBackTitleStyle: {
-            fontFamily: 'open-sans'
-        },
-        headerTintColor: Platform.OS === 'android' ? 'white' : COLORS.primary
+    defaultNavigationOptions: defaultNavOptions,
+    navigationOptions: {// configured here for material drawer icon, so cons in drawer has to give in stack config
+        drawerIcon: (drawerConfig) => <Ionicons name={Platform.OS === 'android' ? "md-cart" : "ios-cart "}
+            size={23} color={drawerConfig.tintColor} />
     }
 });
 
-export default createAppContainer(ProductsNavigator);
+const OrdersNavigator = createStackNavigator({
+    Orders: OrdersScreen
+}, {
+    defaultNavigationOptions: defaultNavOptions,
+    navigationOptions: {// configured here for material drawer icon, so cons in drawer has to give in stack config
+        drawerIcon: (drawerConfig) => <Ionicons name={Platform.OS === 'android' ? "md-list" : "ios-list "}
+            size={23} color={drawerConfig.tintColor} />
+    }
+});
+
+const ShopNavigator = createDrawerNavigator({
+    Products: { screen: ProductsNavigator },
+    Orders: { screen: OrdersNavigator }
+}, {
+    contentOptions: {
+        activeTintColor: COLORS.primary
+    }
+});
+
+export default createAppContainer(ShopNavigator);
