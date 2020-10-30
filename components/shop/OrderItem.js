@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import CartItem from './CartItem'
 import COLOURS from '../../constants/Colors'
 const OrderItem = (props) => {
 
-    const [showDetails, setShowDetails] = useState(false)
+    const [showDetails, setShowDetails] = useState(false);
     return (
         <View style={styles.orderItem}>
             <View style={styles.summary}>
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         margin: 20,
         padding: 10,
-        alignItems: 'center '
+        alignItems: 'center'
     },
     summary: {
         flexDirection: 'row',

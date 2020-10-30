@@ -10,7 +10,7 @@ export default (state = initialState, action) => {
         case ADD_ORDER:
             const newOrder = new Order(new Date().toString(),
                 action.orderData.items,
-                action.orderData.totalAmount,
+                action.orderData.amount,
                 new Date());
 
             return {

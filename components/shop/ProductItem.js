@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Image, StyleSheet, Text, View, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
 import Colors from '../../constants/Colors'
-import { hidden } from 'ansi-colors';
 const ProductItem = (props) => {
 
     let TouchableComponenet = (Platform.OS === 'android' && Platform.Version >= 21) ? TouchableNativeFeedback : TouchableOpacity;
