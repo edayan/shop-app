@@ -10,7 +10,7 @@ import OrdersScreen from '../screens/shop/OrdersScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import ProductOverviewScreen from '../screens/shop/ProductOverviewScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen'
-
+import EditProductsScreen from '../screens/user/EditProductsScreen'
 const defaultNavOptions = {
     headerStyle: {
         backgroundColor: Platform.OS === 'android' ? COLORS.primary : 'white'
@@ -46,7 +46,8 @@ const OrdersNavigator = createStackNavigator({
 });
 
 const AdminNavigator = createStackNavigator({
-    UserPrducts: UserProductsScreen
+    UserPrducts: UserProductsScreen,
+    EditProduct: EditProductsScreen
 }, {
     defaultNavigationOptions: defaultNavOptions,
     navigationOptions: {// configured here for material drawer icon, so cons in drawer has to give in stack config
