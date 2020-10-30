@@ -13,7 +13,7 @@ const UserProductsScreen = props => {
     const dispatch = useDispatch();
 
     const editProductHandler = productId => {
-        props.navigation.naviagte('EditProduct', { productId })
+        props.navigation.navigate('EditProduct', { productId })
     }
 
     return (
@@ -38,7 +38,7 @@ const UserProductsScreen = props => {
 
 export default UserProductsScreen
 
-UserProductsScreen.navigationOptions = navData => {
+UserProductsScreen.navigationOptions = navdata => {
     return {
         headerTitle: 'My Products',
         headerLeft: () => <HeaderButtons HeaderButtonComponent={HeaderButton} >
@@ -54,7 +54,7 @@ UserProductsScreen.navigationOptions = navData => {
                 title="Add"
                 iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
                 onPress={() => {
-                    navdata.navigation.naviagte('EditProduct')
+                    navdata.navigation.navigate('EditProduct')
                 }} />
         </HeaderButtons>
     }
