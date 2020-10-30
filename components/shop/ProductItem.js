@@ -1,13 +1,13 @@
 import React from 'react';
-import { Button, Image, StyleSheet, Text, View, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
-import Colors from '../../constants/Colors'
+import { Button, Image, Platform, StyleSheet, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
+
 const ProductItem = (props) => {
 
     let TouchableComponenet = (Platform.OS === 'android' && Platform.Version >= 21) ? TouchableNativeFeedback : TouchableOpacity;
     return (
         <View style={styles.product}>
             <View style={styles.touchable}>
-                <TouchableComponenet onPress={props.onViewDetail}
+                <TouchableComponenet onPress={props.onSelect}
                     useForeground //for ripple effect to put over all including image
                 >
                     <View>
@@ -21,8 +21,7 @@ const ProductItem = (props) => {
 
                         </View>
                         <View style={styles.actions}>
-                            <Button color={Colors.primary} title="View details" onPress={props.onViewDetail} />
-                            <Button color={Colors.primary} title="Add to cart" onPress={props.onAddToCart} />
+                            {props.children}
                         </View>
                     </View>
 

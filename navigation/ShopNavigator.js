@@ -9,7 +9,7 @@ import CartScreen from '../screens/shop/CartScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import ProductOverviewScreen from '../screens/shop/ProductOverviewScreen';
-
+import UserProductsScreen from '../screens/user/UserProductsScreen'
 
 const defaultNavOptions = {
     headerStyle: {
@@ -45,9 +45,21 @@ const OrdersNavigator = createStackNavigator({
     }
 });
 
+const AdminNavigator = createStackNavigator({
+    UserPrducts: UserProductsScreen
+}, {
+    defaultNavigationOptions: defaultNavOptions,
+    navigationOptions: {// configured here for material drawer icon, so cons in drawer has to give in stack config
+        drawerIcon: (drawerConfig) => <Ionicons name={Platform.OS === 'android' ? "md-create" : "ios-create"}
+            size={23} color={drawerConfig.tintColor} />
+    }
+});
+
+
 const ShopNavigator = createDrawerNavigator({
     Products: { screen: ProductsNavigator },
-    Orders: { screen: OrdersNavigator }
+    Orders: { screen: OrdersNavigator },
+    Admin: { screen: AdminNavigator }
 }, {
     contentOptions: {
         activeTintColor: COLORS.primary
