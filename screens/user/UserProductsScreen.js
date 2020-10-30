@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ProductItem from '../../components/shop/ProductItem'
 import HeaderButton from '../../components/UI/HeaderButton'
 import Colors from '../../constants/Colors'
-import * as cartActions from '../../store/actions/cart'
+import * as productActions from '../../store/actions/products'
 
 
 const UserProductsScreen = props => {
@@ -25,7 +25,9 @@ const UserProductsScreen = props => {
                     onSelect={() => { }}
                 >
                     <Button color={Colors.primary} title="Edit" onPress={() => { }} />
-                    <Button color={Colors.primary} title="Delete" onPress={() => { }} />
+                    <Button color={Colors.primary} title="Delete" onPress={() => {
+                        dispatch(productActions.deleteProduct(itemData.item.id))
+                    }} />
                 </ProductItem>}
         />
     )
