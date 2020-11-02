@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { ScrollView, StyleSheet, Text, TextInput, View, Platform } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import HeaderButton from '../../components/UI/HeaderButton'
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import * as     productActions from '../../store/actions/products'
 const EditProductsScreen = (props) => {
 
 
@@ -17,13 +17,27 @@ const EditProductsScreen = (props) => {
         description: editedProduct ? editedProduct.description : '',
     })
 
-    const changeHandler = e => {
-        setAllValues({ ...allValues, [e.target.name]: e.target.value })
+    const changeHandler = (name, text) => {
+        setAllValues({ ...allValues, [name]: text });
     }
 
+    const dispatch = useDispatch()
     const submitHandler = useCallback(() => {
-        console.log('Submitting', allValues)
-    }, []);
+        console.log('description', allValues.description)
+        if (editedProduct) {
+            dispatch(productActions.updateProduct(
+                prodId,
+                allValues.title,
+                allValues.description,
+                allValues.imageUrl));
+        } else {
+            dispatch(productActions.createProduct(
+                allValues.title,
+                allValues.description,
+                allValues.imageUrl,
+                +allValues.price));
+        }
+    }, [allValues, prodId, dispatch]);
 
     useEffect(() => {
         props.navigation.setParams({ 'submit': submitHandler })
@@ -36,33 +50,29 @@ const EditProductsScreen = (props) => {
                     <Text style={styles.label}>Title</Text>
                     <TextInput
                         style={styles.input}
-                        name={title}
-                        value={title}
-                        onChangeText={changeHandler} />
+                        value={allValues.title}
+                        onChangeText={title => changeHandler('title', title)} />
                 </View>
                 <View style={styles.formControl}>
                     <Text style={styles.label}>Image URL</Text>
                     <TextInput
                         style={styles.input}
-                        name={imageUrl}
-                        value={imageUrl}
-                        onChangeText={changeHandler} />
+                        value={allValues.imageUrl}
+                        onChangeText={imageUrl => changeHandler('imageUrl', imageUrl)} />
                 </View>
                 {editedProduct ? null : <View style={styles.formControl}>
                     <Text style={styles.label}>Price</Text>
                     <TextInput
                         style={styles.input}
-                        name={price}
-                        value={price}
-                        onChangeText={changeHandler} />
+                        value={allValues.price}
+                        onChangeText={price => changeHandler('price', price)} />
                 </View>}
                 <View style={styles.formControl}>
                     <Text style={styles.label}>Description</Text>
                     <TextInput
                         style={styles.input}
-                        name={description}
-                        value={description}
-                        onChangeText={changeHandler} />
+                        value={allValues.description}
+                        onChangeText={description => changeHandler('description', description)} />
                 </View>
             </View>
 

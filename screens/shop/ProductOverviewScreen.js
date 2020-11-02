@@ -25,8 +25,8 @@ const ProductOverviewScreen = (props) => {
                     image={itemData.item.imageUrl}
                     title={itemData.item.title}
                     price={itemData.item.price}
-                    onSelect={selectItemViewHandler}
-                ><Button color={Colors.primary} title="View details" onPress={selectItemViewHandler} />
+                    onSelect={() => selectItemViewHandler(itemData)}
+                ><Button color={Colors.primary} title="View details" onPress={() => selectItemViewHandler(itemData)} />
                     <Button color={Colors.primary} title="Add to cart" onPress={
                         () => { dispatch(cartActions.addToCart(itemData.item)); }} />
                 </ProductItem>} />
