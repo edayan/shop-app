@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { ScrollView, StyleSheet, Text, TextInput, View, Platform } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { useDispatch, useSelector } from 'react-redux'
 import HeaderButton from '../../components/UI/HeaderButton'
-import { useSelector, useDispatch } from 'react-redux'
-import * as     productActions from '../../store/actions/products'
+import * as productActions from '../../store/actions/products'
 const EditProductsScreen = (props) => {
-
 
     const prodId = props.navigation.getParam('productId');
     const editedProduct = useSelector(state => state.products.userProducts.find(prod => prod.id === prodId))
@@ -15,15 +14,15 @@ const EditProductsScreen = (props) => {
         imageUrl: editedProduct ? editedProduct.imageUrl : '',
         price: '',
         description: editedProduct ? editedProduct.description : '',
-    })
+    });
 
     const changeHandler = (name, text) => {
         setAllValues({ ...allValues, [name]: text });
     }
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
     const submitHandler = useCallback(() => {
-        console.log('description', allValues.description)
         if (editedProduct) {
             dispatch(productActions.updateProduct(
                 prodId,
@@ -37,6 +36,7 @@ const EditProductsScreen = (props) => {
                 allValues.imageUrl,
                 +allValues.price));
         }
+        props.navigation.goBack();
     }, [allValues, prodId, dispatch]);
 
     useEffect(() => {
