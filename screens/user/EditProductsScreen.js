@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { ScrollView, StyleSheet, Text, TextInput, View, Platform } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import HeaderButton from '../../components/UI/HeaderButton'
@@ -20,6 +20,15 @@ const EditProductsScreen = (props) => {
     const changeHandler = e => {
         setAllValues({ ...allValues, [e.target.name]: e.target.value })
     }
+
+    const submitHandler = useCallback(() => {
+        console.log('Submitting', allValues)
+    }, []);
+
+    useEffect(() => {
+        props.navigation.setParams({ 'submit': submitHandler })
+    }, [submitHandler])
+
     return (
         <ScrollView>
             <View style={styles.form}>
@@ -63,13 +72,14 @@ const EditProductsScreen = (props) => {
 }
 
 EditProductsScreen.navigationOptions = (navdata) => {
+    const submitFn = navdata.navigation.getParam('submit')
     return {
         headerTitle: navdata.navigation.getParam('productId') ? 'Edit Product' : 'Add Product',
         headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton} >
             <Item
                 title="Save"
                 iconName={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-                onPress={() => { }} />
+                onPress={submitFn} />
         </HeaderButtons>
     }
 }
