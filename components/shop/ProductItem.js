@@ -1,11 +1,12 @@
 import React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
+import Card from '../UI/Card';
 
 const ProductItem = (props) => {
 
     let TouchableComponenet = (Platform.OS === 'android' && Platform.Version >= 21) ? TouchableNativeFeedback : TouchableOpacity;
     return (
-        <View style={styles.product}>
+        <Card style={styles.product}>
             <View style={styles.touchable}>
                 <TouchableComponenet onPress={props.onSelect}
                     useForeground //for ripple effect to put over all including image
@@ -29,7 +30,7 @@ const ProductItem = (props) => {
                 </TouchableComponenet>
             </View>
 
-        </View>
+        </Card>
     )
 }
 
@@ -37,16 +38,8 @@ export default ProductItem
 
 const styles = StyleSheet.create({
     product: {
-        shadowColor: 'black',
-        shadowOpacity: 0.26,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
-        elevation: 5, // for android 
-        borderRadius: 10,
-        backgroundColor: 'white',
         height: 300,
         margin: 20,
-
     },
     touchable: {
         borderRadius: 10,
