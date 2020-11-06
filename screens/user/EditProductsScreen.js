@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useReducer } from 'react'
-import { Alert, Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Alert, Platform, ScrollView, StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { useDispatch, useSelector } from 'react-redux'
 import HeaderButton from '../../components/UI/HeaderButton'
@@ -95,62 +95,67 @@ const EditProductsScreen = (props) => {
 
 
     return (
-        <ScrollView>
-            <View style={styles.form}>
-                <Input
-                    id='title'
-                    label={"title"}
-                    errorText={"Please enter a valid title"}
-                    keyboardType='default'
-                    autoCapitalize='sentences'
-                    returnKeyType='next'
-                    autoCorrect
-                    onInputChange={inputChangeHandler} //using .bind(this), triggers unlimited rendering
-                    initialValue={editedProduct ? editedProduct.title : ''}
-                    initiallyValid={!!editedProduct}
-                    required
-                />
-                <Input
-                    id='imageUrl'
-                    label={"Image URL"}
-                    errorText={"Please enter a valid Image URL"}
-                    keyboardType='default'
-                    returnKeyType='done'
-                    onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
-                    initialValue={editedProduct ? editedProduct.imageUrl : ''}
-                    initiallyValid={!!editedProduct}
-                    required
-                />
-
-                {editedProduct ? null :
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}//mandatory, otherwise will not work
+            behavior='padding' keyboardVerticalOffset={100}>
+            <ScrollView>
+                <View style={styles.form}>
                     <Input
-                        id='price'
-                        label={"Price"}
-                        errorText={"Please enter a valid price"}
-                        keyboardType='decimal-pad'
+                        id='title'
+                        label={"title"}
+                        errorText={"Please enter a valid title"}
+                        keyboardType='default'
+                        autoCapitalize='sentences'
+                        returnKeyType='next'
                         autoCorrect
-                        onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
+                        onInputChange={inputChangeHandler} //using .bind(this), triggers unlimited rendering
+                        initialValue={editedProduct ? editedProduct.title : ''}
+                        initiallyValid={!!editedProduct}
                         required
-                        min={0.1}
-                    />}
-                <Input
-                    id='description'
-                    label={"description"}
-                    errorText={"Please enter a valid description"}
-                    keyboardType='default'
-                    autoCapitalize='sentences'
-                    autoCorrect
-                    multiline
-                    numberOfLines={3}
-                    onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
-                    initialValue={editedProduct ? editedProduct.description : ''}
-                    initiallyValid={!!editedProduct}
-                    required
-                    minLength={5}
-                />
-            </View>
+                    />
+                    <Input
+                        id='imageUrl'
+                        label={"Image URL"}
+                        errorText={"Please enter a valid Image URL"}
+                        keyboardType='default'
+                        returnKeyType='done'
+                        onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
+                        initialValue={editedProduct ? editedProduct.imageUrl : ''}
+                        initiallyValid={!!editedProduct}
+                        required
+                    />
 
-        </ScrollView>
+                    {editedProduct ? null :
+                        <Input
+                            id='price'
+                            label={"Price"}
+                            errorText={"Please enter a valid price"}
+                            keyboardType='decimal-pad'
+                            autoCorrect
+                            onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
+                            required
+                            min={0.1}
+                        />}
+                    <Input
+                        id='description'
+                        label={"description"}
+                        errorText={"Please enter a valid description"}
+                        keyboardType='default'
+                        autoCapitalize='sentences'
+                        autoCorrect
+                        multiline
+                        numberOfLines={3}
+                        onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
+                        initialValue={editedProduct ? editedProduct.description : ''}
+                        initiallyValid={!!editedProduct}
+                        required
+                        minLength={5}
+                    />
+                </View>
+
+            </ScrollView>
+        </KeyboardAvoidingView>
+
 
     )
 }
