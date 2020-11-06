@@ -1,12 +1,23 @@
-import React, { useReducer } from 'react'
-import { StyleSheet, Text, View, TextInput } from 'react-native'
+import React, { useEffect, useReducer } from 'react'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
 
 const INPUT_CHANGE = 'INPUT_CHANGE'
+const INPUT_BLUR = 'INPUT_BLUR'
 
 const inputReducer = (state, action) => {
     switch (action.type) {
         case INPUT_CHANGE:
-            break;
+            return {
+                ...state,
+                value: action.value,
+                isValid: action.isValid,
+
+            }
+        case INPUT_BLUR:
+            return {
+                ...state,
+                touched: true
+            }
         default:
             state
     }
@@ -17,9 +28,17 @@ const Input = (props) => {
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue ? props.initialValue : '',
         isValid: props.initiallyValid,
-        toiuched: false,
+        touched: false,
 
     });
+    const { onInputChange, id } = props;
+    useEffect(() => {
+        if (inputState.touched) {
+            onInputChange(id, inputState.value, inputState.isValid);
+        }
+    }, [inputState, onInputChange, id]);
+
+
     const textChangeHandler = (text) => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let isValid = true;
@@ -46,18 +65,23 @@ const Input = (props) => {
             isValid
         });
     }
+
+    const lostFocusHandler = () => {
+        dispatch({
+            type: INPUT_BLUR,
+        });
+    }
     return (
         <View style={styles.formControl}>
             <Text style={styles.label}>{props.label}</Text>
             <TextInput
                 {...props}
                 style={styles.input}
-                value={formState.inputValues.title}
+                value={inputState.value}
                 onChangeText={textChangeHandler}
-
-
+                onBlur={lostFocusHandler}
             />
-            {!formState.inputValidites.title && <Text>{props.errorText}</Text>}
+            {!inputState.isValid && <Text>{props.errorText}</Text>}
         </View>
     )
 }

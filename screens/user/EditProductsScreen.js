@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useReducer } from 'react'
-import { Alert, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Platform, ScrollView, StyleSheet, View } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { useDispatch, useSelector } from 'react-redux'
 import HeaderButton from '../../components/UI/HeaderButton'
-import * as productActions from '../../store/actions/products'
 import Input from '../../components/UI/Input'
+import * as productActions from '../../store/actions/products'
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
@@ -84,44 +84,57 @@ const EditProductsScreen = (props) => {
         props.navigation.setParams({ 'submit': submitHandler })
     }, [submitHandler])
 
-    textChangeHandler = (inputIdentifier, text) => {
-        let isValid = false;
-        if (text.length > 0 && text.trim.length > 0) {
-            isValid = true;
-        }
+    inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
         dispatchFormState({
             type: FORM_INPUT_UPDATE,
-            value: text,
-            isValid,
+            value: inputValue,
+            isValid: inputValidity,
             input: inputIdentifier
         })
-    }
+    }, [dispatchFormState]);
+
+
     return (
         <ScrollView>
             <View style={styles.form}>
                 <Input
+                    id='title'
                     label={"title"}
                     errorText={"Please enter a valid title"}
                     keyboardType='default'
                     autoCapitalize='sentences'
                     returnKeyType='next'
                     autoCorrect
+                    onInputChange={inputChangeHandler} //using .bind(this), triggers unlimited rendering
+                    initialValue={editedProduct ? editedProduct.title : ''}
+                    initiallyValid={!!editedProduct}
+                    required
                 />
                 <Input
+                    id='imageUrl'
                     label={"Image URL"}
                     errorText={"Please enter a valid Image URL"}
                     keyboardType='default'
                     returnKeyType='done'
+                    onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
+                    initialValue={editedProduct ? editedProduct.imageUrl : ''}
+                    initiallyValid={!!editedProduct}
+                    required
                 />
 
                 {editedProduct ? null :
                     <Input
+                        id='price'
                         label={"Price"}
                         errorText={"Please enter a valid price"}
                         keyboardType='decimal-pad'
                         autoCorrect
+                        onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
+                        required
+                        min={0.1}
                     />}
                 <Input
+                    id='description'
                     label={"description"}
                     errorText={"Please enter a valid description"}
                     keyboardType='default'
@@ -129,6 +142,11 @@ const EditProductsScreen = (props) => {
                     autoCorrect
                     multiline
                     numberOfLines={3}
+                    onInputChange={inputChangeHandler}//using .bind(this), triggers unlimited rendering
+                    initialValue={editedProduct ? editedProduct.description : ''}
+                    initiallyValid={!!editedProduct}
+                    required
+                    minLength={5}
                 />
             </View>
 
