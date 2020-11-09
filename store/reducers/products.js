@@ -17,8 +17,8 @@ export default (state = initialState, action) => {
                 availableProducts: state.availableProducts.filter(product => product.id !== productId)
             }
         case CREATE_PRODUCT:
-            const { title, description, imageUrl, price } = action.productData;
-            const product = new Product(new Date().toString(), 'u1', title, imageUrl, description, price);
+            const { id, title, description, imageUrl, price } = action.productData;
+            const product = new Product(id, 'u1', title, imageUrl, description, price);
             return {
                 ...state,
                 availableProducts: state.availableProducts.concat(product),

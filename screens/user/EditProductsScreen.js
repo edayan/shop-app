@@ -8,8 +8,8 @@ import * as productActions from '../../store/actions/products'
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
-const formReducer = (state, actions) => {
-    if (actions.type === FORM_INPUT_UPDATE) {
+const formReducer = (state, action) => {
+    if (action.type === FORM_INPUT_UPDATE) {
         const updatedValues = {
             ...state.inputValues,
             [action.input]: action.value
@@ -97,7 +97,7 @@ const EditProductsScreen = (props) => {
     return (
         <KeyboardAvoidingView
             style={{ flex: 1 }}//mandatory, otherwise will not work
-            behavior='padding' keyboardVerticalOffset={100}>
+            behavior='height' keyboardVerticalOffset={100}>
             <ScrollView>
                 <View style={styles.form}>
                     <Input
