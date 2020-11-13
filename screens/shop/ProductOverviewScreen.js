@@ -36,6 +36,25 @@ const ProductOverviewScreen = (props) => {
         }
     }, [dispatch, setIsLoading, setError])
 
+    /**
+     * re-loadProducts on nav.drawer screen changes,
+     * stack navigator always rerender screen but not drawer
+     */
+    useEffect(() => {
+        const willFocusSubscription = props.navigation.addListener('willFocus', loadProducts);
+
+
+        //all listeners in useEffect  should be cleared when un mounted.
+        return () => {
+            willFocusSubscription.remove();
+        }
+    }, [loadProducts]);
+
+
+    /**
+     * still needs 2nd use effect for initial renders, the other one registers the willFocus only
+     * once register completed, it triggers on each dispaly of screen based on willFocus event
+     */
     useEffect(() => {
         loadProducts();
     }, [loadProducts]);
