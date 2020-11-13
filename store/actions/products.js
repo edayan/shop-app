@@ -7,15 +7,24 @@ export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export const fetchProducts = () => {
     return async (dispatch) => {
-        const response = await fetch('https://rn-complete-guide-shop-2346f.firebaseio.com/products.json');
-        const resData = await response.json();
-        console.log(resData);
+        try {
+            const response = await fetch('https://rn-complete-guide-shop-2346f.firebaseio.com/products.jon');
+            if (!response.ok) {
+                throw new Error('something went wrong');
+            }
+            const resData = await response.json();
+            console.log(resData);
 
-        const loadedProduct = [];
-        for (key in resData) {
-            loadedProduct.push(new Product(key, 'u1', resData[key].title, resData[key].imageUrl, resData[key].description, resData[key].price));
+            const loadedProduct = [];
+            for (key in resData) {
+                loadedProduct.push(new Product(key, 'u1', resData[key].title, resData[key].imageUrl, resData[key].description, resData[key].price));
+            }
+            dispatch({ type: SET_PRODUCTS, products: loadedProduct })
+        } catch (err) {
+            console.log(err);
+            throw err
         }
-        dispatch({ type: SET_PRODUCTS, products: loadedProduct })
+
     }
 }
 export const deleteProduct = productId => {
