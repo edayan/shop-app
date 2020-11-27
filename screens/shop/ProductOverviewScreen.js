@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { ActivityIndicator, Button, FlatList, Platform, StyleSheet, View, Text, Button } from 'react-native';
+import { ActivityIndicator, Button, FlatList, Platform, StyleSheet, View, Text } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductItem from '../../components/shop/ProductItem';
