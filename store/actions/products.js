@@ -8,7 +8,7 @@ export const SET_PRODUCTS = 'SET_PRODUCTS';
 export const fetchProducts = () => {
     return async (dispatch) => {
         try {
-            const response = await fetch('https://rn-complete-guide-shop-2346f.firebaseio.com/products.jon');
+            const response = await fetch('https://rn-complete-guide-shop-2346f.firebaseio.com/products.json?key=AIzaSyADbcDdwNBpr3iVwSny1ejlwC4bBpa5x0c');
             if (!response.ok) {
                 throw new Error('something went wrong');
             }
