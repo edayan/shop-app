@@ -11,6 +11,7 @@ import * as productActions from '../../store/actions/products';
 
 const ProductOverviewScreen = (props) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setRefreshing] = useState(false);
     const [error, setError] = useState();
 
     const products = useSelector(state => state.products.availableProducts);
@@ -25,16 +26,15 @@ const ProductOverviewScreen = (props) => {
 
     const loadProducts = useCallback(async () => {
         setError(null);
-        setIsLoading(true);
+        setRefreshing(true);
         try {
             await dispatch(productActions.fetchProducts());
-            setIsLoading(false);
+            setRefreshing(false);
         } catch (err) {
-            setIsLoading(false);
             console.log(err);
             setError(err.message)
         }
-    }, [dispatch, setIsLoading, setError])
+    }, [dispatch, setRefreshing, setError])
 
     /**
      * re-loadProducts on nav.drawer screen changes,
@@ -56,7 +56,8 @@ const ProductOverviewScreen = (props) => {
      * once register completed, it triggers on each dispaly of screen based on willFocus event
      */
     useEffect(() => {
-        loadProducts();
+        setIsLoading(true);
+        loadProducts().then(() => setIsLoading(false));
     }, [loadProducts]);
 
     if (isLoading) {
@@ -79,6 +80,8 @@ const ProductOverviewScreen = (props) => {
     }
     return (
         <FlatList data={products}
+            onRefresh={loadProducts}
+            refreshing={isRefreshing}
             keyExtractor={item => item.id}
             renderItem={itemData =>
                 <ProductItem
