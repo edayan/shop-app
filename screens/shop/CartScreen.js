@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, StyleSheet, Text, View, FlatList } from 'react-native'
+import React, { useState } from 'react'
+import { Button, StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import Colors from '../../constants/Colors'
 import CartItem from '../../components/shop/CartItem';
@@ -8,6 +8,9 @@ import * as ordersActions from '../../store/actions/orders'
 import Card from '../../components/UI/Card'
 
 const CartScreen = (props) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
+
     const cartTotalAmount = useSelector(state => state.cart.totalAmount);
     const cartItems = useSelector(state => {
 
@@ -26,16 +29,39 @@ const CartScreen = (props) => {
 
     const dispatch = useDispatch();
 
+    const addOrder = async () => {
+        try {
+            setIsLoading(true);
+            await dispatch(ordersActions.addOrder(cartItems, cartTotalAmount))
+        } catch (err) {
+            setError(err.message);
+        }
+        setIsLoading(false);
+    };
+    const removeOrder = async () => {
+        try {
+            setIsLoading(true);
+            await dispatch(cartActions.removeFromCart(itemData.item.productId))
+        } catch (err) {
+            setError(err.message);
+        }
+        setIsLoading(false);
+
+    };
+
     return (
         <View style={styles.screen}>
             <Card style={styles.summary}>
                 <Text style={styles.summaryText}>
                     Total: <Text style={styles.amount}>${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}</Text>
                 </Text>
-                <Button color={Colors.accent}
-                    title="Order now"
-                    disabled={cartItems.length === 0}
-                    onPress={() => dispatch(ordersActions.addOrder(cartItems, cartTotalAmount))} />
+                {isLoading ?
+                    <ActivityIndicator size="small" color={Colors.primary} /> :
+                    <Button color={Colors.accent}
+                        title="Order now"
+                        disabled={cartItems.length === 0}
+                        onPress={addOrder} />}
+
             </Card>
             <FlatList data={cartItems}
                 keyExtractor={item => item.productId}
@@ -44,7 +70,7 @@ const CartScreen = (props) => {
                     title={itemData.item.productTitle}
                     amount={itemData.item.sum}
                     deletable
-                    onRemove={() => { dispatch(cartActions.removeFromCart(itemData.item.productId)) }}
+                    onRemove={removeOrder}
                 />)
                 } />
         </View>
