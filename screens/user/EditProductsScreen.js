@@ -55,7 +55,7 @@ const EditProductsScreen = (props) => {
             price: editedProduct ? true : false,
             description: editedProduct ? true : false,
         },
-        formIsValid: false
+        formIsValid: editedProduct ? true : false
     });
 
     const dispatch = useDispatch();
@@ -103,14 +103,15 @@ const EditProductsScreen = (props) => {
         props.navigation.setParams({ 'submit': submitHandler })
     }, [submitHandler])
 
-    inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
-        dispatchFormState({
-            type: FORM_INPUT_UPDATE,
-            value: inputValue,
-            isValid: inputValidity,
-            input: inputIdentifier
-        })
-    }, [dispatchFormState]);
+    inputChangeHandler = useCallback(
+        (inputIdentifier, inputValue, inputValidity) => {
+            dispatchFormState({
+                type: FORM_INPUT_UPDATE,
+                value: inputValue,
+                isValid: inputValidity,
+                input: inputIdentifier
+            })
+        }, [dispatchFormState]);
 
     if (isLoading) {
         return <View style={styles.centered}>
